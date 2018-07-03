@@ -29,35 +29,53 @@ class App extends Component {
   }
 
   getVehicles() {
-    // axios (GET)
-    // setState with response -> vehiclesToDisplay
+    axios.get('https://joes-autos.herokuapp.com/api/vehicles').then(results => {
+      toast.success('Correctly found vehicles.');
+      this.setState({vehiclesToDisplay: results.data});
+    }).catch( () => toast.error('Failed to get vehicles.'));
   }
 
   getPotentialBuyers() {
-    // axios (GET)
-    // setState with response -> buyersToDisplay
+    axios.get('https://joes-autos.herokuapp.com/api/buyers').then(results => {
+      toast.success('Buyers found correctly.');
+      this.setState({ buyersToDisplay: results.data });
+    }).catch( () => toast.error('No buyers to be found!'));
   }
 
   sellCar(id) {
+    axios.delete(`https://joes-autos.herokuapp.com/api/vehicles/${id}`).then(results => {
+      toast.success('Removed vehicle correctly. ');
+      this.setState({vehiclesToDisplay: results.data.vehicles});
+    }).catch( () => toast.error('Could not find car to sell.'));
     // axios (DELETE)
     // setState with response -> vehiclesToDisplay
   }
 
   filterByMake() {
     let make = this.selectedMake.value;
-
+    axios.get(`https://joes-autos.herokuapp.com/api/vehicles?make=${make}`).then(results => {
+      toast.success('Filtered by Make');
+      console.log('make', make)
+      this.setState({vehiclesToDisplay: results.data});
+    }).catch( () => toast.error('Did not filter make correctly.'));
+    
     // axios (GET)
     // setState with response -> vehiclesToDisplay
   }
 
   filterByColor() {
     let color = this.selectedColor.value;
-
+    axios.get(`https://joes-autos.herokuapp.com/api/vehicles?color=${color}`).then(res => {
+      toast.success('Filter Color Correctly');
+      this.setState({vehiclesToDisplay: res.data});
+    }).catch( () => toast.error('Did not filter color'));
     // axios (GET)
     // setState with response -> vehiclesToDisplay
   }
 
   updatePrice(priceChange, id) {
+
+
     // axios (PUT)
     // setState with response -> vehiclesToDisplay
   }
